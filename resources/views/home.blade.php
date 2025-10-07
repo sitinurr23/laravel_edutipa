@@ -3,110 +3,142 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Beranda | Edutipa</title>
-
+    <title>Daftar Buku | Edutipa</title>
     <style>
-        /* Reset & Font */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: "Poppins", "Segoe UI", sans-serif;
-        }
-
         body {
-            background-color: #f4f6f9;
-            color: #1e293b;
-        }
-
-        header {
-            background-color: #2563eb;
-            color: #fff;
-            padding: 18px 60px;
-            text-align: left;
-            font-size: 20px;
-            font-weight: 600;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-        }
-
-        main {
+            font-family: "Poppins", sans-serif;
+            background: linear-gradient(135deg, #e9ecef, #f8f9fa);
+            color: #2c3e50;
+            min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            min-height: calc(100vh - 100px);
-            padding: 40px 20px;
         }
 
-        .content {
-            background: #fff;
-            padding: 40px 60px;
-            border-radius: 12px;
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
-            width: 600px;
-            animation: fadeIn 0.8s ease;
+        .container {
+            width: 90%;
+            max-width: 800px;
+            background: #ffffff;
+            padding: 40px 50px;
+            border-radius: 16px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+            text-align: center;
         }
 
         h1 {
-            font-size: 26px;
-            font-weight: 600;
-            color: #1e3a8a;
-            margin-bottom: 15px;
+            color: #1a2942; /* navy */
+            margin-bottom: 10px;
+            font-size: 28px;
+            letter-spacing: 0.5px;
         }
 
         p {
+            color: #6c757d; /* abu muda */
+            margin-bottom: 25px;
             font-size: 15px;
-            color: #475569;
-            line-height: 1.8;
-            margin-bottom: 30px;
         }
 
-        .btn {
-            display: inline-block;
-            background: #2563eb;
-            color: #fff;
-            text-decoration: none;
-            padding: 12px 28px;
+        .search-container {
+            margin-bottom: 25px;
+        }
+
+        input[type="text"] {
+            padding: 10px 15px;
+            width: 80%;
+            max-width: 350px;
+            border: 1.8px solid #adb5bd;
             border-radius: 8px;
-            font-size: 15px;
-            font-weight: 500;
-            transition: all 0.3s ease;
+            outline: none;
+            font-size: 14px;
+            transition: 0.2s;
         }
 
-        .btn:hover {
-            background: #1d4ed8;
-            transform: translateY(-2px);
+        input[type="text"]:focus {
+            border-color: #1a2942;
+            box-shadow: 0 0 5px rgba(26, 41, 66, 0.2);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        th, td {
+            padding: 12px;
+            border-bottom: 1px solid #dee2e6;
+            text-align: left;
+        }
+
+        th {
+            background: #1a2942; /* navy */
+            color: #ffffff;
+            text-transform: uppercase;
+            font-size: 13px;
+            letter-spacing: 0.5px;
+        }
+
+        tr:hover {
+            background-color: #e9ecef;
         }
 
         footer {
             text-align: center;
-            padding: 15px;
-            background: #f1f5f9;
-            color: #64748b;
+            margin-top: 30px;
             font-size: 13px;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(15px); }
-            to { opacity: 1; transform: translateY(0); }
+            color: #adb5bd;
         }
     </style>
 </head>
 <body>
+    <div class="container">
+        <h1>📚 Daftar Buku</h1>
+        <p>Temukan berbagai buku menarik yang bisa menambah wawasanmu!</p>
 
-    <header>Edutipa — Sistem Informasi Pembelajaran</header>
-
-    <main>
-        <div class="content">
-            <h1>Selamat Datang</h1>
-            <p>
-                Aplikasi ini dikembangkan menggunakan <strong>Laravel</strong> sebagai bagian dari proyek pembelajaran.
-                Tujuannya adalah untuk mempermudah pengelolaan data, administrasi, dan proses belajar mengajar secara digital.
-            </p>
-            <a href="/" class="btn">Masuk ke Halaman Utama</a>
+        <div class="search-container">
+            <input type="text" id="searchInput" placeholder="Cari buku berdasarkan judul atau penulis...">
         </div>
-    </main>
 
-    <footer>© 2025 Edutipa | Dibuat oleh Siti Nur, Siswa PKL</footer>
+        <table id="bukuTable">
+            <thead>
+                <tr>
+                    <th>No</th>
+                    <th>Judul Buku</th>
+                    <th>Penulis</th>
+                    <th>Tahun</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach ($buku as $index => $item)
+                    <tr>
+                        <td>{{ $index + 1 }}</td>
+                        <td>{{ $item['judul'] }}</td>
+                        <td>{{ $item['penulis'] }}</td>
+                        <td>{{ $item['tahun'] }}</td>
+                    </tr>
+                @endforeach
+            </tbody>
+        </table>
 
+        <footer>© 2025 Edutipa | Laravel Project</footer>
+    </div>
+
+    <script>
+        // Fitur Search
+        const searchInput = document.getElementById('searchInput');
+        const table = document.getElementById('bukuTable');
+        const rows = table.getElementsByTagName('tr');
+
+        searchInput.addEventListener('keyup', function() {
+            const filter = searchInput.value.toLowerCase();
+            for (let i = 1; i < rows.length; i++) {
+                const rowText = rows[i].textContent.toLowerCase();
+                rows[i].style.display = rowText.includes(filter) ? '' : 'none';
+            }
+        });
+    </script>
 </body>
 </html>

@@ -6,18 +6,41 @@ use Illuminate\Http\Request;
 
 class HomeController extends Controller
 {
+
     public function index()
     {
+       
+        $buku = [
+            ['judul' => 'Pemrograman Laravel Dasar', 'penulis' => 'Sinta Aeni', 'tahun' => 2023],
+            ['judul' => 'Belajar PHP Modern', 'penulis' => 'Rika Nur', 'tahun' => 2022],
+            ['judul' => 'Desain Database MySQL', 'penulis' => 'Ahmad Rafi', 'tahun' => 2021],
+            ['judul' => 'Pemrograman Web Lanjutan', 'penulis' => 'Nur Fadilah', 'tahun' => 2024],
+            ['judul' => 'Framework Laravel untuk Pemula', 'penulis' => 'Budi Santoso', 'tahun' => 2023],
+        ];
 
-        return view('home');
+
+        return view('home', ['buku' => $buku]);
     }
 
-    public function form(Request $request)
+
+    public function kirimMessage(Request $request)
     {
 
-        $dataMessage = $request->message;
+        $message = $request->message;
 
-        
-        return view('home', ['message' => $dataMessage]);
+
+        $buku = [
+            ['judul' => 'Pemrograman Laravel Dasar', 'penulis' => 'Sinta Aeni', 'tahun' => 2023],
+            ['judul' => 'Belajar PHP Modern', 'penulis' => 'Rika Nur', 'tahun' => 2022],
+            ['judul' => 'Desain Database MySQL', 'penulis' => 'Ahmad Rafi', 'tahun' => 2021],
+            ['judul' => 'Pemrograman Web Lanjutan', 'penulis' => 'Nur Fadilah', 'tahun' => 2024],
+            ['judul' => 'Framework Laravel untuk Pemula', 'penulis' => 'Budi Santoso', 'tahun' => 2023],
+        ];
+
+
+        return view('home', [
+            'buku' => $buku,
+            'message' => $message
+        ]);
     }
 }

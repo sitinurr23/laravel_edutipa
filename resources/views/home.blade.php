@@ -3,64 +3,191 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Halaman Home</title>
+    <title>Daftar Buku | Edutipa</title>
     <style>
         body {
-            background: #f8f6f1;
-            font-family: 'Poppins', sans-serif;
-            color: #3b3b3b;
+            font-family: "Poppins", sans-serif;
+            background: linear-gradient(135deg, #e9ecef, #f8f9fa);
+            color: #2c3e50;
+            min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
         }
-        .card {
-            background: #fff;
-            padding: 50px;
-            border-radius: 18px;
-            box-shadow: 0 8px 30px rgba(0,0,0,0.1);
+
+        .container {
+            width: 90%;
+            max-width: 800px;
+            background: #ffffff;
+            padding: 40px 50px;
+            border-radius: 16px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
             text-align: center;
-            width: 500px;
         }
+
         h1 {
-            color: #5c5047;
-            margin-bottom: 20px;
+            color: #1a2942; /* navy */
+            margin-bottom: 10px;
+            font-size: 28px;
+            letter-spacing: 0.5px;
         }
-        .message {
-            background: #f3ede7;
-            border: 1px solid #d6ccc2;
-            border-radius: 10px;
-            padding: 15px 20px;
-            margin-top: 10px;
+
+        p {
+            color: #6c757d; /* abu muda */
+            margin-bottom: 25px;
+            font-size: 15px;
         }
-        a {
-            display: inline-block;
-            margin-top: 25px;
-            text-decoration: none;
-            background: #8b7b6f;
-            color: white;
-            padding: 10px 20px;
+
+        .search-container {
+            margin-bottom: 25px;
+        }
+
+        input[type="text"], textarea {
+            padding: 10px 15px;
+            width: 80%;
+            max-width: 400px;
+            border: 1.8px solid #adb5bd;
             border-radius: 8px;
-            transition: 0.3s;
+            outline: none;
+            font-size: 14px;
+            transition: 0.2s;
         }
-        a:hover {
-            background: #6f6258;
+
+        input[type="text"]:focus, textarea:focus {
+            border-color: #1a2942;
+            box-shadow: 0 0 5px rgba(26, 41, 66, 0.2);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        th, td {
+            padding: 12px;
+            border-bottom: 1px solid #dee2e6;
+            text-align: left;
+        }
+
+        th {
+            background: #1a2942; /* navy */
+            color: #ffffff;
+            text-transform: uppercase;
+            font-size: 13px;
+            letter-spacing: 0.5px;
+        }
+
+        tr:hover {
+            background-color: #e9ecef;
+        }
+
+        .message-section {
+            margin-top: 35px;
+            text-align: left;
+        }
+
+        .message-section h3 {
+            color: #1a2942;
+            margin-bottom: 10px;
+        }
+
+        .message-box {
+            background: #f1f3f5;
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 15px;
+        }
+
+        button {
+            background-color: #1a2942;
+            color: white;
+            border: none;
+            padding: 10px 25px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        button:hover {
+            background-color: #16233a;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 30px;
+            font-size: 13px;
+            color: #adb5bd;
         }
     </style>
 </head>
 <body>
-    <div class="card">
-        <h1>Selamat Datang di Halaman Home</h1>
+    <div class="container">
+        <h1>📚 Daftar Buku</h1>
+        <p>Temukan berbagai buku menarik yang bisa menambah wawasanmu!</p>
 
-        @if(isset($message))
-            <div class="message">
-                <strong>Pesan:</strong> {{ $message }}
-            </div>
-        @else
-            <p>Belum ada pesan yang dikirim.</p>
-        @endif
+        <div class="search-container">
+            <input type="text" id="searchInput" placeholder="Cari buku berdasarkan judul atau penulis...">
+        </div>
 
-        <a href="/form">Kirim Pesan Baru</a>
+        <table id="bukuTable">
+            <thead>
+                <tr>
+                    <th>No</th>
+                    <th>Judul Buku</th>
+                    <th>Penulis</th>
+                    <th>Tahun</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach ($buku as $index => $item)
+                    <tr>
+                        <td>{{ $index + 1 }}</td>
+                        <td>{{ $item['judul'] }}</td>
+                        <td>{{ $item['penulis'] }}</td>
+                        <td>{{ $item['tahun'] }}</td>
+                    </tr>
+                @endforeach
+            </tbody>
+        </table>
+
+        {{-- 🔹 Bagian Form Message --}}
+        <div class="message-section">
+            <h3>Kirim Pesan</h3>
+            <form action="/kirim-message" method="POST">
+                @csrf
+                <textarea name="message" rows="3" placeholder="Tulis pesan di sini..."></textarea><br><br>
+                <button type="submit">Kirim Pesan</button>
+            </form>
+
+            {{-- 🔹 Tampilkan Pesan Setelah Dikirim --}}
+            @if (isset($message))
+                <div class="message-box">
+                    <strong>Pesan Kamu:</strong>
+                    <p>{{ $message }}</p>
+                </div>
+            @endif
+        </div>
+
+        <footer>© 2025 Edutipa | Laravel Project</footer>
     </div>
+
+    <script>
+        // Fitur Search
+        const searchInput = document.getElementById('searchInput');
+        const table = document.getElementById('bukuTable');
+        const rows = table.getElementsByTagName('tr');
+
+        searchInput.addEventListener('keyup', function() {
+            const filter = searchInput.value.toLowerCase();
+            for (let i = 1; i < rows.length; i++) {
+                const rowText = rows[i].textContent.toLowerCase();
+                rows[i].style.display = rowText.includes(filter) ? '' : 'none';
+            }
+        });
+    </script>
 </body>
 </html>
